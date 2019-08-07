@@ -28,7 +28,7 @@
 				xtype: 'field',
 				height: 68,
 				width: 200,
-				cls: 'search'
+				cls: 'search',
 			});
 			Ext.reg('com.ita.Field', com.ita.Field)
 
@@ -52,16 +52,17 @@
 				activeTab: 0,
 				items: [{
 					title: '国内版',
-					xtype: 'com.ita.Field'
+					xtype: 'com.ita.Field',
 				}, {
 					title: '国际版',
 					xtype: 'com.ita.Field'
-				}]
+				}],
 			})
 
 			var container = new Ext.Container({
 				renderTo: 'test',
 				style: 'float: left;',
+				cls: 'alpha',
 				items: [{
 					xtype: 'com.ita.Img'
 				}
@@ -90,6 +91,11 @@
 
 		#test {
 			margin: 200px 500px;
+		}
+
+		.alpha {
+			opacity: .5;
+			filter: alpha(opacity=10)
 		}
 	</style>
 </body>
