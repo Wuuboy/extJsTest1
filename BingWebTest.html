@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Bing</title>
+	<link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css" />
+	<!-- LIBS -->
+	<script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+	<!-- ENDLIBS -->
+	<script type="text/javascript" src="../ext-all.js"></script>
+	<script>
+		Ext.onReady(function () {
+
+			Ext.ns('com.ita');
+			com.ita.Img = Ext.extend(Ext.BoxComponent, {
+				xtype: 'box',
+				height: 96,
+				width: 200,
+				autoEl: {
+					tag: 'img',
+					src: 'bing.png'
+				}
+			});
+			Ext.reg('com.ita.Img', com.ita.Img)
+
+			com.ita.Field = Ext.extend(Ext.form.Field, {
+				xtype: 'field',
+				height: 68,
+				width: 200,
+				cls: 'search'
+			});
+			Ext.reg('com.ita.Field', com.ita.Field)
+
+			com.ita.searchImg = Ext.extend(Ext.BoxComponent, {
+				xtype: 'box',
+				height: 68,
+				width: 200,
+				style: 'margin-top: 28px;',
+				autoEl: {
+					tag: 'img',
+					src: 'search.png'
+				}
+			});
+			Ext.reg('com.ita.searchImg', com.ita.searchImg)
+
+			var tabPanel = new Ext.TabPanel({
+				renderTo: Ext.getBody(),
+				border: false,
+				activeTab: 0,
+				width: 800,
+				activeTab: 0,
+				items: [{
+					title: '国内版',
+					xtype: 'com.ita.Field'
+				}, {
+					title: '国际版',
+					xtype: 'com.ita.Field'
+				}]
+			})
+
+			var container = new Ext.Container({
+				renderTo: 'test',
+				style: 'float: left;',
+				items: [{
+					xtype: 'com.ita.Img'
+				}
+				],
+				tabPanel
+			})
+		})
+
+	</script>
+</head>
+
+<body>
+	<div id="test"></div>
+	<style>
+		body {
+			background-image: url(bingBackground.jpg) !important;
+		}
+
+		.search {
+			background-image: url(search.png) !important;
+			background-repeat: no-repeat;
+			background-position: right;
+			width: 100px;
+			height: 50px
+		}
+
+		#test {
+			margin: 200px 500px;
+		}
+	</style>
+</body>
+
+</html>
