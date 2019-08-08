@@ -1,0 +1,142 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>08.layout</title>
+  <link rel="stylesheet" type="text/css" href="../../resources/css/ext-all.css"/>
+  <script type="text/javascript" src="../../adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="../../ext-all.js"></script>
+  <style type="text/css">
+    * {
+      font-size: 12px;
+    }
+  </style>
+  <script type="text/javascript">
+    Ext.onReady(function () {
+
+      var navHandler = function (direction) {
+
+        const wizard = Ext.getCmp('wizard').layout;
+        const prev = Ext.getCmp('move-prev');
+        const next = Ext.getCmp('move-next');
+        const activeId = wizard.activeItem.id;
+
+        if (activeId == 'card-0') {
+          if (direction == 1) {
+            wizard.setActiveItem(1);
+            prev.setDisabled(false);
+          }
+        } else if (activeId == 'card-1') {
+          Ext.getCmp('Q1Field').setValue(Ext.getCmp('card-0').getValue().boxLabel)
+          const valueQ2Checked = Ext.getCmp('card-1').getValue();
+          let valueQ2 = '';
+          for (let i = 0; i < valueQ2Checked.length; i++) {
+            valueQ2 += Ext.getCmp('card-1').getValue()[i].boxLabel
+          }
+          Ext.getCmp('Q2Field').setValue(valueQ2)
+          if (direction == -1) {
+            wizard.setActiveItem(0);
+            prev.setDisabled(true);
+          } else {
+            wizard.setActiveItem(2);
+            next.setDisabled(true);
+          }
+        } else if (activeId == 'card-2') {
+          if (direction == -1) {
+            wizard.setActiveItem(1);
+            next.setDisabled(false);
+          }
+        }
+      };
+
+      const viewport = new Ext.Viewport({
+        layout: 'border',
+        region: 'center',
+        items: [{
+          region: 'center',
+          id: 'wizard',
+          title: 'cardLayout',
+          layout: 'card',
+          activeItem: 0,
+          bodyStyle: 'padding:15px',
+          defaults: {
+            border: false
+          },
+          bbar: [{
+            id: 'move-prev',
+            text: '上一题',
+            handler: navHandler.createDelegate(this, [-1]),
+            disabled: true
+          }, '->', {
+            id: 'move-next',
+            text: '下一题',
+            handler: navHandler.createDelegate(this, [1])
+          }],
+
+          items: [
+            {
+              id: 'card-0',
+              xtype: 'radiogroup',
+              fieldLabel: 'Single Column',
+              itemCls: 'x-check-group-alt',
+              columns: 1,
+              items: [
+                {xtype: 'label', text: 'Q1：番茄酱属于以下哪种垃圾？（单选）'},
+                {boxLabel: '干垃圾', name: 'rb-col', inputValue: 1},
+                {boxLabel: '湿垃圾', name: 'rb-col', inputValue: 2, checked: true},
+                {boxLabel: '有毒垃圾', name: 'rb-col', inputValue: 3},
+                {boxLabel: '可回收物', name: 'rb-col', inputValue: 4}
+              ]
+            }, {
+              id: 'card-1',
+              xtype: 'checkboxgroup',
+              fieldLabel: 'Single Column',
+              itemCls: 'x-check-group-alt',
+              columns: 1,
+              items: [
+                {xtype: 'label', text: 'Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）'},
+                {boxLabel: '把粑粑用废纸包好带回家冲掉', name: 'cb-col-1'},
+                {boxLabel: '受污染的报纸按有害垃圾处理', name: 'cb-col-2', checked: true},
+                {boxLabel: '没受污染的报纸可按回收垃圾处理', name: 'cb-col-3'},
+                {boxLabel: '受污染的报纸浸水后按湿垃圾处理', name: 'cb-col-4'}
+              ]
+            },
+            new Ext.form.FormPanel({
+              id: 'card-2',
+              defaultType: 'textfield',
+              labelAlign: 'center',
+              title: 'simple form',
+              labelWidth: 50,
+              frame: true,
+              items: [{
+                id: 'Q1Field',
+                msgTarget: 'title',
+                fieldLabel: 'Q1',
+                anchor: '30%'
+              }, {
+                xtype: 'textarea',
+                id: 'Q2Field',
+                msgTarget: 'title',
+                fieldLabel: 'Q2',
+                anchor: '30%'
+              }],
+              buttons: [{
+                text: 'submit',
+                listeners: {
+                  'click': function (btn, form) {
+                    Ext.MessageBox.alert('恭喜你不是垃圾!')
+                  }
+                }
+              }]
+            })
+          ]
+        }]
+      });
+    });
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>
