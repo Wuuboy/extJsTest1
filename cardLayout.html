@@ -44,14 +44,17 @@
         } else if (activeId == 'card-2') {
           if (direction == -1) {
             wizard.setActiveItem(1);
-            next.setDisabled(false);
+            next.hidden;
+            // next.setDisabled(false);
           }
         }
       };
 
-      const viewport = new Ext.Viewport({
+      const viewport = new Ext.Window({
         layout: 'border',
         region: 'center',
+        width:300,
+        height:300,
         items: [{
           region: 'center',
           id: 'wizard',
@@ -112,13 +115,13 @@
                 id: 'Q1Field',
                 msgTarget: 'title',
                 fieldLabel: 'Q1',
-                anchor: '30%'
+                anchor: '100%'
               }, {
                 xtype: 'textarea',
                 id: 'Q2Field',
                 msgTarget: 'title',
                 fieldLabel: 'Q2',
-                anchor: '30%'
+                anchor: '100%'
               }],
               buttons: [{
                 text: 'submit',
@@ -132,7 +135,9 @@
           ]
         }]
       });
+      viewport.show()
     });
+
   </script>
 </head>
 
