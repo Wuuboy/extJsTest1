@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Tree</title>
+  <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+  <!-- LIBS -->
+  <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+  <!-- ENDLIBS -->
+  <script type="text/javascript" src="../ext-all.js"></script>
+  <script>
+    Ext.onReady(function () {
+      Ext.onReady(function () {
+        const menu = new Ext.menu.Menu({
+          items: [{
+            id: 'deleteNode',
+            text: 'Delete Node'
+          }, {
+            id: 'addNode',
+            text: 'Add Node'
+          }],
+          listeners: {
+            itemclick: function (item) {
+              switch (item.id) {
+                case 'deleteNode':
+                  var currentNode = item.parentMenu.contextNode;
+                  if (currentNode.parentNode) {
+                    currentNode.remove();
+                  }
+                  break;
+                case 'addNode':
+                  var parentNode = item.parentMenu.contextNode.parentNode;
+                  if (parentNode.text.indexOf('Class') != -1) {
+                    // console.log((parentNode.childNodes.length))
+                    parentNode.appendChild(
+                        {
+                          text: 'stu' + (parentNode.childNodes.length + 1),
+                          leaf: true,
+                          checked: false
+                        })
+                  } else if (parentNode.text.indexOf('School') != -1) {
+                    parentNode.appendChild(
+                        {text: 'Class' + (parentNode.childNodes.length + 1), children: []})
+                  } else {
+                    break
+                  }
+              }
+            }
+          }
+        });
+
+        var tree = new Ext.tree.TreePanel({
+          id: 'rootNode',
+          // region: 'west',
+          collapsible: true,
+          title: 'StuMgr',
+          width: 350,
+          border: true,
+          autoScroll: true,
+          animate: true,
+          rootVisible: true,
+          split: true,
+          enableDD: true,
+          contextMenu: menu,
+          dataUrl: 'list.txt',
+          // loader: new Ext.tree.TreeLoader({
+          //   dataUrl: 'list.txt'
+          // }),
+          root: new Ext.tree.AsyncTreeNode({
+            expanded: false,
+            text: 'School',
+            leaf: false
+          }),
+          listeners: {
+            afterrender: function (node) {
+              tree.expandAll()
+            },
+            contextmenu: function (node, e) {
+              node.select();
+              var treeContextMenu = node.getOwnerTree().contextMenu;
+              treeContextMenu.contextNode = node;
+              treeContextMenu.showAt(e.getXY());
+            }
+          }
+        })
+
+        tree.on('nodedrop', function (e) {
+          Ext.Msg.alert('Drag Event',
+              'currently dragging node:' + e.dropNode.text + ' dropping into node:' + e.target.text
+              + ', dragging pattern is ' + e.point);
+        })
+
+        var treeEditor = new Ext.tree.TreeEditor(tree, {allowBlank: false}, {
+          listeners: {
+            complete: function (editor, currVal, origVal) {
+              // if (currVal.indexOf('demi') != -1) {
+              // currVal.addClass('color:red')
+              // console.log(editor)
+              // currentNode.ui.addClass('color:red')
+              // }
+              Ext.Msg.alert('Tree Editor', 'node text changed from ' + origVal + ' to ' + currVal);
+            }
+          }
+        })
+
+        // console.log(Ext.getCmp('rootNode').eachChild(function (c) {
+        //       alert(c.text)
+        //     }
+        // ))
+        // var classComboBox = new Ext.form.ComboBox({
+        //   id: 'age',
+        //   fieldLabel: 'Age',
+        //   emptyText: 'Choose/Input your class',
+        //   mode: 'local',
+        //   store: new Ext.data.ArrayStore({
+        //     id: 0,
+        //     fields: ['age', 'description'],
+        //     data: [[22, 'Class1'], [23, 'Class2'], [24, 'Class3']]
+        //   }),
+        //   // valueField: 'age',
+        //   displayField: 'description'
+        // });
+
+        var stuForm = new Ext.FormPanel({
+          id: 'stuInfo',
+          labelWidth: 75, // label settings here cascade unless overridden
+          url: 'save-form.php',
+          frame: true,
+          title: 'Add Stu',
+          bodyStyle: 'padding:5px 5px 0',
+          width: 350,
+          defaults: {width: 230},
+          defaultType: 'textfield',
+
+          items: [{
+            id: 'className',
+            fieldLabel: 'Class Name',
+            allowBlank: false
+          }, {
+            id: 'stuName',
+            fieldLabel: 'Stu Name',
+            allowBlank: false
+          }
+          ],
+          buttons: [{
+            text: 'Save',
+            listeners: {
+              'click': function (btn) {
+                const className = Ext.getCmp('className').getValue()
+                const stuName = Ext.getCmp('stuName').getValue()
+                tree.getNodeById(className).appendChild(
+                    {text: stuName, leaf: true, checked: false})
+              }
+            }
+          }, {
+            text: 'Reset',
+            listeners: {
+              'click': function (btn) {
+                Ext.getCmp('stuInfo').getForm().reset()
+              }
+            }
+          }]
+        })
+        var classForm = new Ext.FormPanel({
+          id: 'classInfo',
+          labelWidth: 75, // label settings here cascade unless overridden
+          url: 'save-form.php',
+          frame: true,
+          title: 'Add Class',
+          bodyStyle: 'padding:5px 5px 0',
+          width: 350,
+          defaults: {width: 230},
+          defaultType: 'textfield',
+
+          items: [{
+            id: 'classNameInput',
+            fieldLabel: 'Class Name',
+            allowBlank: false
+          }
+          ],
+          buttons: [{
+            text: 'Save',
+            listeners: {
+              'click': function (btn) {
+                const className = Ext.getCmp('classNameInput').getValue()
+                tree.getRootNode().appendChild(
+                    {text: className, children: []})
+              }
+            }
+          }, {
+            text: 'Reset',
+            listeners: {
+              'click': function (btn) {
+                Ext.getCmp('classInfo').getForm().reset()
+              }
+            }
+          }]
+        })
+
+        var tabs = new Ext.TabPanel({
+          width:350,
+          activeTab: 0,
+          items: [{
+            title: 'Tab 1',
+            items:[stuForm]
+          },{
+            title: 'Tab 2',
+            items:[classForm]
+          }]
+        });
+        new Ext.Viewport({
+          rigion: 'center',
+          items: [
+            tree,
+            tabs
+          ]
+        })
+      })
+    })
+  </script>
+</head>
+<body>
+</body>
+</html>
