@@ -1,0 +1,18 @@
+[	{
+	id : 'Class1',
+        text : 'Class1',
+        children : [  
+		{ text : 'stu1' , leaf : true ,checked:true},
+            	{ text : 'stu2' , leaf : true,checked:false}
+       		 ]  
+	},
+	{  
+	id : 'Class2',
+        text : 'Class2',
+        children : [  
+		{ text : 'stu1' , leaf : true ,checked:true},
+            	{ text : 'stu2' , leaf : true,checked:false}
+       		 ]  
+	},
+	
+]
