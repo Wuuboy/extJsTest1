@@ -10,6 +10,7 @@
   <script type="text/javascript" src="../ext-all.js"></script>
   <script>
     Ext.onReady(function () {
+
       const menu = new Ext.menu.Menu({
         items: [{
           id: 'deleteNode',
@@ -86,21 +87,14 @@
           }
         }
       })
-
       tree.on('nodedrop', function (e) {
         Ext.Msg.alert('Drag Event',
             'currently dragging node:' + e.dropNode.text + ' dropping into node:' + e.target.text
             + ', dragging pattern is ' + e.point);
       })
-
       var treeEditor = new Ext.tree.TreeEditor(tree, {allowBlank: false}, {
         listeners: {
           complete: function (editor, currVal, origVal) {
-            // if (currVal.indexOf('demi') != -1) {
-            // currVal.addClass('color:red')
-            // console.log(editor)
-            // currentNode.ui.addClass('color:red')
-            // }
             Ext.Msg.alert('Tree Editor', 'node text changed from ' + origVal + ' to ' + currVal);
           }
         }
@@ -117,7 +111,6 @@
         emptyText: 'select a class',
         listeners: {
           expand: function (node) {
-            console.log(tree.getRootNode().childNodes)
             data.length = 0
             for (var i = 0; i < tree.getRootNode().childNodes.length; i++) {
               var text = tree.getRootNode().childNodes[i].attributes.text
@@ -127,7 +120,6 @@
           }
         }
       });
-
       var stuForm = new Ext.FormPanel({
         id: 'stuInfo',
         labelWidth: 75,
@@ -152,17 +144,21 @@
           listeners: {
             'click': function (btn) {
               const className = Ext.getCmp('className').getValue()
-              console.log(className)
               const stuName = Ext.getCmp('stuName').getValue()
-              tree.getNodeById(className).appendChild(
-                  {text: stuName, leaf: true, checked: false})
+              const nodeFinded = tree.getNodeById(stuName)
+              if(!nodeFinded){
+                tree.getNodeById(className).appendChild(
+                    {id:stuName,text: stuName, leaf: true, checked: false})
+                Ext.MessageBox.alert('SAVE SUCCESS!')
+              }else {
+                Ext.MessageBox.alert('NODE ALREADY EXISTS!')
+              }
             }
           }
         }, {
           text: 'Reset',
           listeners: {
             'click': function (btn) {
-              console.log(tree.getRootNode().childNodes.length)
               Ext.getCmp('stuInfo').getForm().reset()
             }
           }
@@ -190,9 +186,14 @@
           listeners: {
             'click': function (btn) {
               const className = Ext.getCmp('classNameInput').getValue()
-              tree.getRootNode().appendChild(
-                  {text: className, children: []})
-
+              const nodeFinded = tree.getNodeById(className)
+              if(!nodeFinded) {
+                tree.getRootNode().appendChild(
+                    {id:className,text: className, children: []})
+                Ext.MessageBox.alert('SAVE SUCCESS!')
+              }else {
+                Ext.MessageBox.alert('CLASS ALREADY EXISTS!')
+              }
             }
           }
         }, {
@@ -215,7 +216,8 @@
           title: 'Tab 2',
           items: [classForm]
         }]
-      });
+      })
+
       new Ext.Window({
         layout: 'column',
         rigion: 'north',
