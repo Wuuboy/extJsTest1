@@ -2,16 +2,16 @@
 	id : 'Class1',
         text : 'Class1',
         children : [  
-		{ text : 'stu1' , leaf : true ,checked:true},
-            	{ text : 'stu2' , leaf : true,checked:false}
+		{ id:'stu1',text : 'stu1' , leaf : true ,checked:true},
+            	{ id:'stu2',text : 'stu2' , leaf : true,checked:false}
        		 ]  
 	},
 	{  
 	id : 'Class2',
         text : 'Class2',
         children : [  
-		{ text : 'stu1' , leaf : true ,checked:true},
-            	{ text : 'stu2' , leaf : true,checked:false}
+		{ id:'stu3',text : 'stu3' , leaf : true ,checked:true},
+            	{ id:'stu4',text : 'stu4' , leaf : true,checked:false}
        		 ]  
 	},
 	
