@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Tree</title>
+    <link rel="stylesheet" type="text/css" href="../resources/css/ext-all.css"/>
+    <!-- LIBS -->
+    <script type="text/javascript" src="../adapter/ext/ext-base.js"></script>
+    <!-- ENDLIBS -->
+    <script type="text/javascript" src="../ext-all.js"></script>
+    <script>
+        Ext.onReady(function () {
+
+
+            var resetMenu = new Ext.menu.Item({
+                id: 'Reset',
+                text: 'Reset',
+                listeners: {
+                    'click': function (btn) {
+                        Ext.getCmp('replyBox').reset()
+                    }
+                }
+            })
+
+            var tableMenu = new Ext.menu.Item({
+                id: 'Table',
+                text: 'Table',
+                listeners: {
+                    'click': function (btn) {
+                        new Ext.Window({
+                            id :'rowAndRowForm',
+                            items: [
+                                new Ext.FormPanel({
+                                    labelWidth: 75, // label settings here cascade unless overridden
+                                    frame: true,
+                                    title: 'Simple Form',
+                                    bodyStyle: 'padding:5px 5px 0',
+                                    width: 350,
+                                    defaults: {width: 230},
+                                    defaultType: 'textfield',
+                                    items: [{
+                                        id: 'rows',
+                                        fieldLabel: 'RowNumber',
+                                        allowBlank: false
+                                    }, {
+                                        id: 'cols',
+                                        fieldLabel: 'ColNumber',
+                                        allowBlank: false
+                                    }
+                                    ],
+                                    buttons: [{
+                                        text: 'Save',
+                                        listeners: {
+                                            click: function () {
+                                                let dataArray = []
+                                                const rows = Ext.getCmp('rows').getValue()
+                                                const cols = Ext.getCmp('cols').getValue()
+                                                let count = 1
+                                                for (let i = 0; i < rows; i ++) {
+                                                    dataArray[i]=[]
+                                                    for (let j = 0; j < cols; j ++) {
+                                                        dataArray[i][j] = count
+                                                    }
+                                                }
+                                                new Ext.Window({
+                                                    items: [
+                                                        new Ext.Panel({
+                                                            id: "panel",
+                                                            width: 300,
+                                                            frame: true,
+                                                            height: 400,
+                                                            title: "XTemplate",
+                                                            renderTo: Ext.getBody(),
+                                                            data: dataArray,
+                                                            tpl: new Ext.XTemplate([
+                                                                '<table border="1" cellspacing="1" cellpadding="1" contenteditable="true">',
+                                                                '<tpl for="values">',
+                                                                '<tr>',
+                                                                '<tpl for="values">',
+                                                                '<td>hello</td>',
+                                                                '</tpl>',
+                                                                '</tr>',
+                                                                '</tpl>',
+                                                                '</table>'
+                                                            ])
+                                                        })
+                                                    ]
+                                                })
+                                                // Ext.getCom('replyBox').add()
+
+                                                Ext.getCmp('rowAndRowForm').hide()
+                                            }
+                                        }
+                                    }]
+                                })]
+
+                        }).show()
+                    }
+                }
+            })
+
+            var editButton = new Ext.Button({
+                text: 'Edit',
+                id: 'Edit',
+                menu: [new Ext.menu.Item({
+                    id: 'ResetMenu',
+                    text: 'Reset',
+                    listeners: {
+                        'click': function (btn) {
+                            Ext.getCmp('replyBox').reset()
+                        }
+                    }
+                })]
+            })
+
+
+            var insertButton = new Ext.Button({
+                text: 'Insert',
+                id: 'Insert',
+                menu: [
+                    new Ext.menu.Item({
+                        id: 'TableInsert',
+                        text: 'Table',
+                        listeners: {
+                            'click': function (btn) {
+                                new Ext.Window({
+                                    id :'rowAndRowForm',
+                                    items: [
+                                        new Ext.FormPanel({
+                                            labelWidth: 75, // label settings here cascade unless overridden
+                                            frame: true,
+                                            title: 'Simple Form',
+                                            bodyStyle: 'padding:5px 5px 0',
+                                            width: 350,
+                                            defaults: {width: 230},
+                                            defaultType: 'textfield',
+                                            items: [{
+                                                id: 'rows',
+                                                fieldLabel: 'RowNumber',
+                                                allowBlank: false
+                                            }, {
+                                                id: 'cols',
+                                                fieldLabel: 'ColNumber',
+                                                allowBlank: false
+                                            }
+                                            ],
+                                            buttons: [{
+                                                text: 'Save',
+                                                listeners: {
+                                                    click: function () {
+                                                        let dataArray = []
+                                                        const rows = Ext.getCmp('rows').getValue()
+                                                        const cols = Ext.getCmp('cols').getValue()
+                                                        let count = 1
+                                                        for (let i = 0; i < rows; i ++) {
+                                                            dataArray[i]=[]
+                                                            for (let j = 0; j < cols; j ++) {
+                                                                dataArray[i][j] = count
+                                                            }
+                                                        }
+                                                        new Ext.Window({
+                                                            items: [
+                                                                new Ext.Panel({
+                                                                    id: "panel",
+                                                                    width: 300,
+                                                                    frame: true,
+                                                                    height: 400,
+                                                                    title: "XTemplate",
+                                                                    renderTo: Ext.getBody(),
+                                                                    data: dataArray,
+                                                                    tpl: new Ext.XTemplate([
+                                                                        '<table border="1" cellspacing="1" cellpadding="1" contenteditable="true">',
+                                                                        '<tpl for="values">',
+                                                                        '<tr>',
+                                                                        '<tpl for="values">',
+                                                                        '<td>hello</td>',
+                                                                        '</tpl>',
+                                                                        '</tr>',
+                                                                        '</tpl>',
+                                                                        '</table>'
+                                                                    ])
+                                                                })
+                                                            ]
+                                                        })
+                                                        // Ext.getCom('replyBox').add()
+
+                                                        Ext.getCmp('rowAndRowForm').hide()
+                                                    }
+                                                }
+                                            }]
+                                        })]
+
+                                }).show()
+                            }
+                        }
+                    })]
+            })
+
+            var replyButton = new Ext.Button({
+                text: 'Reply',
+                id: 'Reply',
+                listeners: {
+                    click: function () {
+                        if (Ext.getCmp('replyBox').getValue()) {
+                            Ext.Msg.show({
+                                title: "",
+                                msg: "replying...",
+                                width: 300,
+                                wait: true,
+                                waitConfig: {
+                                    interval: 500, duration: 3000, fn: function () {
+                                        Ext.Msg.hide();
+                                        Ext.Msg.alert('SUCCESS!');
+                                    }
+                                },
+                                closable: true
+                            })
+                        } else {
+                            Ext.getCmp('Reply').disable()
+                        }
+                    }
+                }
+            })
+
+            var toolBar = new Ext.Toolbar({
+                id: 'toolBar',
+                renderTo: document.body,
+                // width: 600,
+                // height: 100,
+                tooltip: {text: 'This is a an example QuickTip for a toolbar item', title: 'Tip Title'},
+                items: [
+                    editButton,
+                    {
+                        xtype: 'tbseparator'
+                    },
+                    insertButton,
+                    {
+                        xtype: 'tbseparator'
+                    },
+                    replyButton
+                ]
+            })
+
+            const contextmenu = new Ext.menu.Menu({
+                // items: [editButton, insertButton],
+                items: [resetMenu, tableMenu]
+            })
+
+            new Ext.Window({
+                rigion: 'north',
+                items: [
+                    toolBar,
+                    {
+                        xtype: 'textarea',
+                        id: 'replyBox',
+                        emptyText: 'enter info',
+                        width: 200,
+                        height: 200,
+                        // contextMenu:contextmenu,
+                        listeners: {
+                            change: function () {
+                                Ext.getCmp('Reply').enable()
+                            }
+                        }
+                    }
+                ]
+            }).show()
+
+            Ext.get('replyBox').on('contextmenu', function (e) {
+                e.preventDefault();
+                contextmenu.showAt(e.getXY());
+            })
+
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>
