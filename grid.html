@@ -185,8 +185,18 @@
                 }
             })
 
+            const CLEAR = new Ext.menu.Item({
+                id: 'CLEAR',
+                text: 'CLEAR',
+                listeners: {
+                    click: function () {
+                       store.clearGrouping()
+                    }
+                }
+            })
+
             const contextmenu = new Ext.menu.Menu({
-                items: [UP, DOWN, FIRST, LAST]
+                items: [UP, DOWN, FIRST, LAST,CLEAR]
             })
 
             const grid = new Ext.grid.EditorGridPanel({
